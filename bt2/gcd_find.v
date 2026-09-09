@@ -14,7 +14,7 @@ module gcd_find(
     wire greater;
     wire equal;
 
-    gcd_search datapath_inst (
+    /*gcd_search datapath_inst (
         .in_a(in_a),
         .in_b(in_b),
         .en_a(en_a),
@@ -25,6 +25,22 @@ module gcd_find(
         .greater(greater),
         .equal(equal)
     );
+	 */
+	 
+	 
+	 gcd_search_by_divider datapath_inst (
+        .in_a(in_a),
+        .in_b(in_b),
+        .en_a(en_a),
+        .en_b(en_b),
+        .clk(clk),
+        .mode(mode),
+        .gcd(gcd),
+        .greater(greater),
+        .equal(equal)
+    );
+
+	 
 
 
     gcd_fsm fsm_inst (
