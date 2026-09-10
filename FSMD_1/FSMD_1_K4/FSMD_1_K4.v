@@ -2,7 +2,8 @@ module FSMD_1_K4 # (parameter N = 64, M = 16) (
     input clk,
     input rst_n,
     input start,
-    output busy
+    output busy,
+	 output [2*M + $clog2(N) - 1 : 0] result
 );
     wire counter_en, write_en, mac_clr, mac_en, last;
     wire [$clog2(N+2)-1:0] cnt_val;
@@ -46,7 +47,7 @@ module FSMD_1_K4 # (parameter N = 64, M = 16) (
 
     sync_write_SRAM #(.N(N), .M(M)) ram_y (
         .clk(clk), .rst_n(rst_n), .write_en(write_en),
-        .acc(acc_out)
+        .acc(acc_out), .word(result)
     );
 
 endmodule
