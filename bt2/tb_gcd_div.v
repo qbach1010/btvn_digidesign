@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_gcd();
+module tb_gcd_div();
 
     // Declare signals connected to the DUT
     reg clk;
@@ -24,8 +24,8 @@ module tb_gcd();
     integer total_cycles = 0;
     real average_cycles;
 
-    // Instantiate the DUT (using the gcd_top module written previously)
-    gcd_find dut (
+    // Instantiate the DUT (using the gcd_div_find module written previously)
+    gcd_div_find dut (
         .clk(clk),
         .rst_n(rst_n),
         .start(start),
