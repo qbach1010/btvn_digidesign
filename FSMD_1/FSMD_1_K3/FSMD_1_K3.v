@@ -2,7 +2,8 @@ module FSMD_1_K3 # (parameter N = 64, B = 4, M = 16) (
     input clk,
     input rst_n,
     input start,
-    output busy
+    output busy,
+	 output [2*M + $clog2(N) - 1 : 0] result
 );
     localparam N_b = N / B;
 
@@ -43,7 +44,7 @@ module FSMD_1_K3 # (parameter N = 64, B = 4, M = 16) (
 
     sync_write_SRAM #(.N(N), .M(M)) ram_y (
         .clk(clk), .rst_n(rst_n), .write_en(write_en),
-        .acc(acc_out)
+        .acc(acc_out), .word(result)
     );
 
 endmodule
