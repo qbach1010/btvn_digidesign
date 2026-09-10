@@ -7,7 +7,7 @@ module gcd_search_by_divider(
 	input mode,
 	output reg [7:0] gcd,
 	output reg greater,
-	output reg equal);
+	output reg equal);//  this module is created to still have the same structure as the one with subtraction
 	
 	 wire [7:0] cal_a;
     wire [7:0] cal_b;
