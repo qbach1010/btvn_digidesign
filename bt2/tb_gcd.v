@@ -24,7 +24,7 @@ module tb_gcd();
     integer total_cycles = 0;
     real average_cycles;
 
-    // Instantiate the DUT (using the gcd_top module written previously)
+    // Instantiate the DUT
     gcd_find dut (
         .clk(clk),
         .rst_n(rst_n),
