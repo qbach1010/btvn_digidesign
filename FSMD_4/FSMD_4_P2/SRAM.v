@@ -9,9 +9,7 @@ module async_SRAM_matrix_P1 # (parameter M = 8, N = 8, SIZE = 16) (
 	// default data in ram
 	integer j;
     initial begin
-        for (j = 0; j < M*N; j = j + 1) begin
-            sram[j] = j[SIZE-1:0];
-        end
+        for (j = 0; j < M*N; j = j + 1) sram[j] = j;
     end
 	 
     assign val = sram[row_addr * N + col_addr];
@@ -28,9 +26,7 @@ module async_SRAM_vector_P1 # (parameter N = 8, SIZE = 16) (
 	// default data in ram
 	integer j;
     initial begin
-        for (j = 0; j < N; j = j + 1) begin
-            sram[j] = j[SIZE-1:0];
-        end
+        for (j = 0; j < N; j = j + 1) sram[j] = j;
     end
 	 
     assign val = sram[row_addr];
@@ -43,11 +39,11 @@ module async_SRAM_matrix_P2 #(parameter M = 8, N = 8, SIZE = 16) (
 );
     reg [M*SIZE-1:0] sram [N-1:0];
     
-	 // default data in ram
+	// default data in ram
     integer i, j;
     initial begin
         for (j=0; j<N; j=j+1) begin
-            for (i=0; i<M; i=i+1) sram[j][i*SIZE +: SIZE] = j[SIZE-1:0];
+            for (i=0; i<M; i=i+1) sram[j] = j;
         end
     end
     
@@ -65,9 +61,12 @@ module async_SRAM_vector_P2 #(parameter N = 8, SIZE = 16) (
 );
     reg [N*SIZE-1:0] sram_x;
 
-	 // default data in ram
+	// default data in ram
+    integer j;
     initial begin
-        sram_x = {(N*SIZE){1'b1}}; 
+        for (j = 0; j < N; j = j + 1) begin
+            sram_x[j*SIZE +: SIZE] = j;
+        end
     end
     
     assign val = sram_x;
@@ -78,7 +77,8 @@ module sync_write_SRAM_P1 # (parameter M = 8, W = 35) (
     input clk, rst_n, write_en,
     input [W-1:0] acc,
     input [$clog2(M)-1:0] row_addr,
-	output reg [M*W-1: 0] result
+	// force quartus to keep all FFs of result, do not delete FFs that remains logic '0'
+    (* noprune *) output reg [M*W-1: 0] result
 );
     always @ (posedge clk)
         if (!rst_n) result <= 0;
@@ -91,7 +91,8 @@ module sync_write_SRAM_P2 #(parameter M = 8, W = 35) (
     input clk, rst_n, write_en,
     input [W-1:0] acc,
     input [$clog2(M+1)-1:0] addr,
-    output reg [M*W-1:0] result
+    // force quartus to keep all FFs of result, do not delete FFs that remains logic '0'
+    (* noprune *) output reg [M*W-1:0] result
 );
     always @(posedge clk) begin
         if (!rst_n) result <= 0;

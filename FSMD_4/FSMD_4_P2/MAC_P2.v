@@ -2,7 +2,8 @@ module MAC_P2 #(parameter N = 8, SIZE = 16) (
     input clk, rst_n, en,
     input [N*SIZE-1:0] a_vector,
     input [N*SIZE-1:0] x_vector,
-    output reg signed [2*SIZE + $clog2(N) - 1 : 0] acc
+    // force quartus to keep all FFs of acc, do not delete FFs that remains logic '0'
+    (* noprune *) output reg signed [2*SIZE + $clog2(N) - 1 : 0] acc
 );
     wire signed [SIZE-1:0] a [N-1:0];
     wire signed [SIZE-1:0] b [N-1:0];
@@ -14,8 +15,9 @@ module MAC_P2 #(parameter N = 8, SIZE = 16) (
             assign b[i] = x_vector[i*SIZE +: SIZE];
         end
     endgenerate
-
-    wire signed [2*SIZE-1:0] mul [N-1:0];
+    
+    // force quartus to use dsp to multiply, do not try to use LE to add constant
+    (* multstyle = "dsp" *) wire signed [2*SIZE-1:0] mul [N-1:0];
     generate
         for (i=0; i<N; i=i+1) begin : mults
             assign mul[i] = a[i] * b[i];

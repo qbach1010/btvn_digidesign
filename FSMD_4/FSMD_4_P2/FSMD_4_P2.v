@@ -1,3 +1,4 @@
+// M: num of rows, N: num of columns, SIZE: size of each input element (bits)
 module FSMD_4_P2 #(parameter M = 8, N = 8, SIZE = 16) (
     input clk, rst_n, start,
     output busy,
@@ -7,7 +8,9 @@ module FSMD_4_P2 #(parameter M = 8, N = 8, SIZE = 16) (
 
     wire counter_en, write_en, mac_en, last_row;
     wire [$clog2(M+1)-1:0] address;
-    wire [N*SIZE-1:0] a_val, x_val;
+
+    // force quartus to treat input signal A, X as unknown value, not constant
+    (* keep = 1 *) wire [N*SIZE-1:0] a_val, x_val;
     wire signed [W-1:0] acc_out;
 
     controller_P2 FSM (
