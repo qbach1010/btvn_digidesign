@@ -15,7 +15,8 @@ module FSMD_4_P1 # (parameter M = 8, N = 8, SIZE = 16) (
     wire [$clog2(N)-1:0]   col_addr; 
     wire [$clog2(M)-1:0]   row_addr;
     
-    wire [SIZE-1:0] a_val, x_val;
+    // force quartus to treat input signal A, X as unknown value, not constant
+    (* keep = 1 *) wire [SIZE-1:0] a_val, x_val;
     wire signed [W-1:0] acc_out;
     
     // column counter mode N+1 so col_count_out may larger in size than col_addr
